@@ -8,5 +8,5 @@ const router = express.Router();
 // POST /api/activities
 
 // PATCH /api/activities/:activityId
-
+//
 module.exports = router;
