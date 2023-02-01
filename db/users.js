@@ -3,6 +3,7 @@ const client = require("./client");
 const bcrypt = require("bcrypt");
 
 
+
 // user functions
 async function createUser({ username, password }) {
   const SALT_COUNT = 10;
@@ -18,12 +19,33 @@ async function createUser({ username, password }) {
   }
 
 async function getUser({ username, password }) {
- 
+  try{
+    const user = await getUserByUsername(username)
+    const hashedPassword = user.password;
+    const isValid = await bcrypt.compare(password, hashedPassword)
+  if(isValid){
+  delete user.password;
+  return user;
+  }
 }
-async function getUserById(userId) {
-  
+catch(error){
+  throw error;
+}
 }
 
+async function getUserById(userId) {
+ try {
+  const {rows} = await client.query(`
+   SELECT * FROM users
+   WHERE id = $1
+  `,[userId] );
+  
+  return rows;
+
+ }catch(error){
+  throw error;
+ }
+}
 
 async function getUserByUsername(userName) {
   const { rows } = await client.query(`
