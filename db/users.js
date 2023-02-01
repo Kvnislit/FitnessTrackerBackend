@@ -1,31 +1,37 @@
+/* eslint-disable no-useless-catch */
 const client = require("./client");
+const bcrypt = require("bcrypt");
 
-// database functions
 
 // user functions
 async function createUser({ username, password }) {
-  `CREATE TABLE users (
-    id SERIAL PRIMARY KEY 
-    username VARCHAR(255) UNIQUE NOT NULL
-    password VARCHAR(255) NOT NULL
-  )
-  `
   const SALT_COUNT = 10;
-
-  const hashedPassword = await bcrypt.hash(password, SALT_COUNT)
-}
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+  
+  const { rows } = await client.query(`
+  INSERT INTO users (username, password) 
+  VALUES ($1, $2) RETURNING *`,
+  [username, hashedPassword]
+  );
+  
+  return { username: rows[0].username };
+  }
 
 async function getUser({ username, password }) {
-
+ 
 }
-
 async function getUserById(userId) {
-
+  
 }
+
 
 async function getUserByUsername(userName) {
-
-}
+  const { rows } = await client.query(`
+  SELECT * FROM users WHERE username = $1`,
+    [userName]
+    );
+    return rows [0]
+  }
 
 module.exports = {
   createUser,
