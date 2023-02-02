@@ -117,7 +117,7 @@ describe("DB Routines", () => {
      and write the addActivityToRoutine function.****/
 
   describe("createRoutine", () => {
-    xit("Creates and returns the new routine", async () => {
+    it("Creates and returns the new routine", async () => {
       const user = await createFakeUser();
       const routine = await createRoutine({
         creatorId: user.id,
@@ -134,11 +134,11 @@ describe("DB Routines", () => {
           goal: routine.goal,
         })
       );
-    });
+    });``
   });
 
   describe("getAllRoutines", () => {
-    xit("should include the public routine", async () => {
+    it("should include the public routine", async () => {
       const routines = await getAllRoutines();
       expectRoutinesToContainRoutine(routines, fakeRoutine);
     });
@@ -187,7 +187,7 @@ describe("DB Routines", () => {
     });
   });
 
-  describe("getAllPublicRoutines", () => {
+  xdescribe("getAllPublicRoutines", () => {
     xit("should include the public routine", async () => {
       const routines = await getAllPublicRoutines();
       expectRoutinesToContainRoutine(routines, fakeRoutine);
@@ -237,7 +237,7 @@ describe("DB Routines", () => {
     });
   });
 
-  describe("getAllRoutinesByUser", () => {
+  xdescribe("getAllRoutinesByUser", () => {
     xit("should get the public routine for the user", async () => {
       const routines = await getAllRoutinesByUser(fakeUser);
       expectRoutinesToContainRoutine(routines, fakeRoutine);
@@ -293,7 +293,7 @@ describe("DB Routines", () => {
     });
   });
 
-  describe("getPublicRoutinesByUser", () => {
+  xdescribe("getPublicRoutinesByUser", () => {
     xit("should include the public routine", async () => {
       const routines = await getPublicRoutinesByUser(fakeUser);
       expectRoutinesToContainRoutine(routines, fakeRoutine);
@@ -344,7 +344,7 @@ describe("DB Routines", () => {
     });
   });
 
-  describe("getPublicRoutinesByActivity", () => {
+  xdescribe("getPublicRoutinesByActivity", () => {
     xit("should include the public routine containing a specific activityId", async () => {
       const routines = await getPublicRoutinesByActivity(fakeActivity);
       expectRoutinesToContainRoutineWithActivity(
@@ -407,7 +407,7 @@ describe("DB Routines", () => {
     });
   });
 
-  describe("updateRoutine", () => {
+  xdescribe("updateRoutine", () => {
     xit("Returns the updated routine", async () => {
       const fakeRoutine = await createFakePublicRoutine();
 
@@ -452,7 +452,7 @@ describe("DB Routines", () => {
     });
   });
 
-  describe("destroyRoutine", () => {
+  xdescribe("destroyRoutine", () => {
     xit("removes routine from database", async () => {
       const fakeRoutine = await createFakePublicRoutine();
       await destroyRoutine(fakeRoutine.id);

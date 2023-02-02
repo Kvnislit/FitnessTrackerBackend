@@ -57,6 +57,7 @@ async function getActivityByName(name) {
 
 async function attachActivitiesToRoutines(routines) {
   // select and return an array of all activities
+  return getAllActivities()
 }
 
 async function updateActivity({ id, ...fields }) {
