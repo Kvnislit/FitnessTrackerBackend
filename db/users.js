@@ -9,13 +9,14 @@ const SALT_COUNT = 10;
 async function createUser({ username, password }) {
   const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
   
-  const { rows } = await client.query(`
+  const { rows: [user] } = await client.query(`
   INSERT INTO users (username, password) 
-  VALUES ($1, $2) RETURNING *`,
-  [username, hashedPassword]
+  VALUES ($1, $2) 
+  RETURNING id, username
+  `,  [username, hashedPassword]
   );
   
-  return { username: rows[0].username };
+  return user;
   }
 
 async function getUser({ username, password }) {
@@ -36,11 +37,11 @@ catch(error){
 async function getUserById(userId) {
  try {
   const {rows} = await client.query(`
-   SELECT * FROM users
+   SELECT id, username 
+   FROM users
    WHERE id = $1
   `,[userId] );
-  
-  return rows;
+  return rows[0];
 
  }catch(error){
   throw error;

@@ -56,9 +56,35 @@ async function getActivityByName(name) {
 }
 
 async function attachActivitiesToRoutines(routines) {
-  // select and return an array of all activities
-  return getAllActivities()
+  const routinesById = {}
+  routines.forEach(routine => {
+    if(!routinesById[routine.id]){
+      routinesById[routine.id] = {
+        id: routine.id,
+        creatorName: routine.creatorName,
+        creatorId: routine.creatorId,
+        isPublic: routine.isPublic,
+        name: routine.name,
+        goal: routine.goal,
+        activities: [],
+      };
+    }
+    const activity = {
+      name: routine.activityName,
+      id: routine.activityId,
+      routineActivityId: routine.routineActivityId,
+      routineId: routine.id,
+      description: routine.description,
+      count: routine.count,
+      duration: routine.duration
+    }
+    routinesById[routine.id].activities.push(activity)
+  })
+
+
+  return routinesById
 }
+
 
 async function updateActivity({ id, ...fields }) {
   // don't try to update the id
