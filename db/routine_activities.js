@@ -16,7 +16,7 @@ async function addActivityToRoutine({
 }
 
 async function getRoutineActivityById(id) {
-
+  
 }
 
 async function getRoutineActivitiesByRoutine({ id }) {
