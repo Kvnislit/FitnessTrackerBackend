@@ -1,4 +1,3 @@
-//can you guys see this?
 const { attachActivitiesToRoutines } = require("./activities");
 const client = require("./client");
 
@@ -128,6 +127,7 @@ async function updateRoutine({ id, ...fields }) {
   ).join(', ');
 
   try {
+    // update any fields that need to be updated
     if (setRoutines.length > 0) {
       const { rows: [routine] } = await client.query(`
         UPDATE routines
