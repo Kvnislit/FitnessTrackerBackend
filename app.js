@@ -1,20 +1,34 @@
-require("dotenv").config()
-const express = require("express")
-const app = express()
+require('dotenv').config();
+const PORT = process.env.PORT || 3000;
 
-//Setup your Middleware and API Router here
-var cors = require('cors')
+const express = require("express");
+const app = express();
 
+const morgan = require("morgan");
+app.use(morgan('dev'));
 
-app.use(cors())
+const cors = require("cors");
+app.use(cors());
 
-app.get('/products/:id', function (req, res, next) {
-  res.json({msg: 'This is CORS-enabled for all origins!'})
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
+const apiRouter = require("./api");
+app.use("/api", apiRouter);
+
+const { client } = require("./db");
+
+app.use((err, req, res, next) => {
+    res.status(500).send(err);
 })
 
-app.listen(80, function () {
-  console.log('CORS-enabled web server listening on port 80')
+app.use((err, req, res, next) => {
+    res.status(404).send(err);
 })
 
+app.listen(PORT, async () => {
+    console.log(`Running on port: ${PORT}`);
+    await client.connect();
+});
 
 module.exports = app;
