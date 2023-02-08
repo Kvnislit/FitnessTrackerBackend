@@ -7,18 +7,18 @@ async function addActivityToRoutine({
   count,
   duration,
 }) {
-  try{
-    
-  const { rows: [routineActivity] } = await client.query(`
+  try {
+
+    const { rows: [routineActivity] } = await client.query(`
   INSERT INTO routine_activities ("routineId","activityId",count,duration)
   VALUES($1,$2,$3,$4)
   ON CONFLICT ("routineId","activityId") DO NOTHING
   RETURNING *
   `, [routineId, activityId, count, duration])
-  return routineActivity;
-} catch (error) {
-  throw error;
-}
+    return routineActivity;
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function getRoutineActivityById(id) {
@@ -30,7 +30,6 @@ async function getRoutineActivityById(id) {
     return activities;
   } catch (error) {
     console.error(error);
-    return false;
   }
 }
 
@@ -43,39 +42,55 @@ async function getRoutineActivitiesByRoutine({ id }) {
     return rows;
   } catch (error) {
     console.error(error);
-    return false;
   }
 }
 
 async function updateRoutineActivity({ id, ...fields }) {
-  const setActivity =  Object.keys(fields).map(
-      (key, index) => `"${key}"=$${index + 1}`
-    ).join(', ');
+  const setActivity = Object.keys(fields).map(
+    (key, index) => `"${key}"=$${index + 1}`
+  ).join(', ');
 
-   try {
+  try {
     if (setActivity.length > 0) {
-      const { rows:[activity] } = await client.query(`
+      const { rows: [activity] } = await client.query(`
       UPDATE routine_activities 
       SET ${setActivity} 
       WHERE id=${id} 
-      RETURNING *;`, 
-    Object.values(fields));
-    return activity;
+      RETURNING *;`,
+        Object.values(fields));
+      return activity;
     }
   } catch (error) {
-  console.error(error);
-  }}
+    console.error(error);
+  }
+}
 
 
 async function destroyRoutineActivity(id) {
- 
+  try {
+    console.log(id)
+    const { rows: [routine_activity] } = await client.query(`
+    DELETE FROM routine_activities
+    WHERE "routineId" = $1
+    RETURNING *
+  `, [id])
+    console.log(routine_activity)
+    return routine_activity;
+  } catch (error) {
+    console.error;
+  }
 }
-  
+
 
 
 
 async function canEditRoutineActivity(routineActivityId, userId) {
-
+  try{
+    if(routineActivityId === userId)
+      return true
+  }catch(error){
+    console.error;
+  }
 }
 
 module.exports = {
