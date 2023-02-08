@@ -8,12 +8,11 @@ async function addActivityToRoutine({
   duration,
 }) {
   try {
-
     const { rows: [routineActivity] } = await client.query(`
-  INSERT INTO routine_activities ("routineId","activityId",count,duration)
-  VALUES($1,$2,$3,$4)
-  ON CONFLICT ("routineId","activityId") DO NOTHING
-  RETURNING *
+    INSERT INTO routine_activities ("routineId","activityId",count,duration)
+    VALUES($1,$2,$3,$4)
+    ON CONFLICT ("routineId","activityId") DO NOTHING
+    RETURNING *
   `, [routineId, activityId, count, duration])
     return routineActivity;
   } catch (error) {
@@ -65,28 +64,22 @@ async function updateRoutineActivity({ id, ...fields }) {
   }
 }
 
-
 async function destroyRoutineActivity(id) {
   try {
-    console.log(id)
     const { rows: [routine_activity] } = await client.query(`
     DELETE FROM routine_activities
-    WHERE "routineId" = $1
+    WHERE id = $1
     RETURNING *
   `, [id])
-    console.log(routine_activity)
     return routine_activity;
   } catch (error) {
     console.error;
   }
 }
 
-
-
-
 async function canEditRoutineActivity(routineActivityId, userId) {
   try{
-    if(routineActivityId === userId)
+    if(userId === routineActivityId)
       return true
   }catch(error){
     console.error;
