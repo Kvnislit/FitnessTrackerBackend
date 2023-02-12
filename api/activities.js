@@ -70,6 +70,7 @@ router.patch('/:activityId', async (req, res, next) => {
                 name: 'ActivityAlreadyExists'
             })
         }
+        else {
         const activity = await updateActivity({id:activityId, ...req.body});
         if(!activity){
             res.send({
@@ -78,7 +79,9 @@ router.patch('/:activityId', async (req, res, next) => {
                 name: 'NoActivityError'
             })
         }
+    
         res.send(activity);
+    }
     }catch(error){
         next(error);
     }
