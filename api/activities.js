@@ -7,8 +7,8 @@ const { ActivityNotFoundError, ActivityExistsError } = require('../errors')
 // GET /api/activities
 router.get('/', async (req, res, next) => {
     try {
-        const activites = await getAllActivities()
-        res.send(activites);
+        const activity = await getAllActivities()
+        res.send(activity);
     } catch (error) {
         next(error);
     }
